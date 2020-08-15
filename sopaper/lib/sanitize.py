@@ -15,6 +15,8 @@ warnings.filterwarnings("always", category=ReplacementLengthWarning)
 
 def _are_unicode(unicode_args=[]):
     if sys.version_info[0] == 2:
+        for idx, arg in enumerate(unicode_args):
+            unicode_args[idx] = unicode(arg)
         return all((type(arg) == unicode) for arg in unicode_args)
 
     # Assume Python 3
@@ -48,7 +50,7 @@ def sanitize_path_fragment(
                 ReplacementLengthWarning
             )
 
-    sanitized_fragment = unicodedata.normalize('NFC', original_fragment)
+    sanitized_fragment = unicodedata.normalize('NFC', unicode(original_fragment))
     if len(filename_extension) > 0:
         filename_extension = unicodedata.normalize('NFC', '.' + filename_extension)
 
